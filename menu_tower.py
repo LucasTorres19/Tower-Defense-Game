@@ -1,3 +1,5 @@
+import pygame as py
+
 #Al tocar un boton le asigna el numero a cada torre.
 def nro_tower(fila,columna):
 

@@ -1,23 +1,28 @@
-#librerias y import
-
+#librerias
 import pygame as py
 import sys
-
+#archivos
 import menu_tower as mt
 import camp as m
+import towers as t
 
 py.init()
 
 #const y variables.
+
 WIDTH = 800
 HEIGHT = 600
 SCREEN = py.display.set_mode((WIDTH,HEIGHT))
 CLOCK = py.time.Clock()
+
 #Grid de towers
+
 grid = []
 LARGO = 44
 ALTO = 44
 MARGIN = 5
+
+#iconos de las torres.
 
 grid_icon = []
 icon_largo = 36
@@ -25,15 +30,17 @@ icon_alto = 37
 icon_margin = 11
 
 #towers
+
 current_tower = 0
+tower_array = []
 
 #Colors.
+
 BLACK = (0,0,0)
 WHITE = (255,255,255)
 GREEN = ( 0, 255, 0)
 RED = (255,0,0)
 towers_colors = [(0,0,0),(0,255,0),(0,255,255),(0,0,255),(255,0,0),(40,25,55),(23,23,10),(100,100,0),(100,21,100),(1,40,2)]
-
 #Config
 
 py.display.set_caption('Insertar nombre aqui.')
@@ -83,6 +90,8 @@ def main():
     
     global grid
     global current_tower
+    global towers_colors
+    global tower_array
 
     Crear_grid()
 
@@ -102,10 +111,13 @@ def main():
                 mouse_pos = py.mouse.get_pos()
                 pos_com = mouse_pos[0] // (LARGO + MARGIN)
                 pos_fila = mouse_pos[1] // (ALTO + MARGIN)
-            
+
+                #Verificar que este dentro del menu de torres.
                 if pos_com in range(0,2) and pos_fila in range(0,5):
                     grid[pos_fila][pos_com] = 1
                     current_tower = mt.nro_tower(pos_fila,pos_com)
+
+                    #borrar 1 que pueda haber en otro campo.
                     for fila in range(5):
                         for columna in range(2):
                             if fila == pos_fila and columna == pos_com:
@@ -113,9 +125,20 @@ def main():
                             else:
                                 grid[fila][columna] = 0
 
-                
+                    #Agregar la torre al array de torres
+                    for i in range(0,len(tower_array)+1):
+                        if i == len(tower_array):
+                            tower_array.append(t.create_tower(current_tower))
+                    
+
+              
         m.draw_map(SCREEN)
         Dibujar_grid()
+        
+        #Dibujando las torres.
+        for i in range(len(tower_array)):
+            SCREEN.blit(tower_array[i].sprite,py.mouse.get_pos())
+
 
         CLOCK.tick(60)
         py.display.flip()
