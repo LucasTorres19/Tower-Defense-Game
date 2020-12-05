@@ -33,6 +33,7 @@ icon_margin = 11
 
 current_tower = 0
 tower_array = []
+have_tower = False
 
 #Colors.
 
@@ -40,6 +41,7 @@ BLACK = (0,0,0)
 WHITE = (255,255,255)
 GREEN = ( 0, 255, 0)
 RED = (255,0,0)
+GREY = (225, 237, 228)
 towers_colors = [(0,0,0),(0,255,0),(0,255,255),(0,0,255),(255,0,0),(40,25,55),(23,23,10),(100,100,0),(100,21,100),(1,40,2)]
 #Config
 
@@ -88,17 +90,19 @@ def Dibujar_grid():
 
 def main():
     
+    #globales
     global grid
     global current_tower
     global towers_colors
     global tower_array
+    global have_tower
 
     Crear_grid()
 
     running = True
     while running:
 
-        SCREEN.fill(BLACK)
+        SCREEN.fill(WHITE)
 
         #verificador de eventos.
         for event in py.event.get():
@@ -106,14 +110,15 @@ def main():
             if event.type == py.QUIT:
                 running = False
                 sys.exit()
+            
             elif event.type == py.MOUSEBUTTONDOWN:
                 
                 mouse_pos = py.mouse.get_pos()
                 pos_com = mouse_pos[0] // (LARGO + MARGIN)
                 pos_fila = mouse_pos[1] // (ALTO + MARGIN)
 
-                #Verificar que este dentro del menu de torres.
-                if pos_com in range(0,2) and pos_fila in range(0,5):
+                #Verificar que este dentro del menu de torres y si no tenes ya una torre selecionada.
+                if pos_com in range(0,2) and pos_fila in range(0,5) and have_tower == False:
                     grid[pos_fila][pos_com] = 1
                     current_tower = mt.nro_tower(pos_fila,pos_com)
 
@@ -128,17 +133,27 @@ def main():
                     #Agregar la torre al array de torres
                     for i in range(0,len(tower_array)+1):
                         if i == len(tower_array):
-                            tower_array.append(t.create_tower(current_tower))
-                    
+                            tower_array.append(t.create_tower(current_tower))                
+                            have_tower = True
+                
+                #Si la torre todavia no fue colocada , tomar la posicion del mouse y ponerla.
+                if have_tower == True:
+                    if tower_array[len(tower_array)-1].placed == False:
+                        if mouse_pos[0] in range(173,756):
+                            tower_array[i].posX,tower_array[i].posY = py.mouse.get_pos()
+                            tower_array[i].placed = True
+                            have_tower = False
 
-              
         m.draw_map(SCREEN)
         Dibujar_grid()
         
         #Dibujando las torres.
         for i in range(len(tower_array)):
-            SCREEN.blit(tower_array[i].sprite,py.mouse.get_pos())
-
+            if tower_array[i].placed == False:                
+                SCREEN.blit(tower_array[i].sprite,py.mouse.get_pos())        
+            else:
+                SCREEN.blit(tower_array[i].sprite,m.place_tower(tower_array[i].posX,tower_array[i].posY))
+                tower_array[i].placed == True
 
         CLOCK.tick(60)
         py.display.flip()
