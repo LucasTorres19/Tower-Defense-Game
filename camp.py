@@ -12,11 +12,11 @@ def draw_map(SCREEN):
     global height 
     global margin 
     
-    green = (177, 230, 18)
+    color = (250, 167, 72)
 
     for fila in range(15):
         for columnas in range(15):
-            py.draw.rect(SCREEN,green,[((margin+width) * columnas + margin )+ 170,
+            py.draw.rect(SCREEN,color,[((margin+width) * columnas + margin )+ 170,
                               (margin+height) * fila + margin,
                               width,
                               height])

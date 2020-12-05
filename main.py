@@ -87,7 +87,6 @@ def Dibujar_grid():
                                 icon_largo,
                                 icon_alto])
 
-
 def main():
     
     #globales
@@ -150,9 +149,13 @@ def main():
         #Dibujando las torres.
         for i in range(len(tower_array)):
             if tower_array[i].placed == False:                
-                SCREEN.blit(tower_array[i].sprite,py.mouse.get_pos())        
+                SCREEN.blit(tower_array[i].sprite,py.mouse.get_pos())
+
             else:
+                #Torre
                 SCREEN.blit(tower_array[i].sprite,m.place_tower(tower_array[i].posX,tower_array[i].posY))
+                #Rango
+                SCREEN.blit(tower_array[i].range,m.place_tower(tower_array[i].posX,tower_array[i].posY))
                 tower_array[i].placed == True
 
         CLOCK.tick(60)
