@@ -51,6 +51,7 @@ towers_colors = [(0,0,0),(0,255,0),(0,255,255),(0,0,255),(255,0,0),(40,25,55),(2
 
 py.display.set_caption('Insertar nombre aqui.')
 
+#menu de torres 
 def Crear_grid():
     global grid
     global grid_icon
@@ -65,6 +66,7 @@ def Crear_grid():
         for columna2 in range(2):
             grid_icon[fila1].append(0)        
 
+#menu de torres.
 def Dibujar_grid():
 
     global grid
@@ -103,10 +105,9 @@ def main():
     global enemies
     global bullets
 
+    #grid de torres.
     Crear_grid()
 
-   
-    
 
     running = True
     while running:
@@ -151,7 +152,7 @@ def main():
                 if have_tower == True:
                     if tower_array[len(tower_array)-1].placed == False:
                         if mouse_pos[0] in range(173,756):
-                            tower_array[i].posX,tower_array[i].posY = py.mouse.get_pos()
+                            tower_array[i].posX,tower_array[i].posY = py.mouse.get_pos() 
                             tower_array[i].range = (tower_array[i].posX + 120,tower_array[i].posY + 120)
                             tower_array[i].placed = True
                             have_tower = False
@@ -159,7 +160,8 @@ def main():
         m.draw_map(SCREEN)
         Dibujar_grid()
         
-        
+        #for para revisar si dentro del rango de la torre hay un enemigo y disparle .(tan bugeadas las colisiones con las balas pero detecta al enemigo en el rango.)
+
         for h in range(len(tower_array)):
 
             if enemy.posX in range(tower_array[h].range[0]-240,tower_array[h].range[0]) and enemy.posY in range(tower_array[h].range[1]-240,tower_array[h].range[1]):
@@ -178,7 +180,6 @@ def main():
         for i in range(len(tower_array)):
             if tower_array[i].placed == False:                
                 SCREEN.blit(tower_array[i].sprite,py.mouse.get_pos())
-
             else:
                 #Torre
                 SCREEN.blit(tower_array[i].sprite,m.place_tower(tower_array[i].posX,tower_array[i].posY))
