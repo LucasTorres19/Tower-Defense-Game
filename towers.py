@@ -1,5 +1,5 @@
 import pygame as py
-
+import bullets 
 #Clases de las torres.
 
 class basic_tower(py.sprite.Sprite):
@@ -9,11 +9,25 @@ class basic_tower(py.sprite.Sprite):
         self.nro = 1
         self.sprite = py.image.load('sprites/black.png').convert()
         self.rect = self.sprite.get_rect()
-        self.posY,self.posX = py.mouse.get_pos() 
+        self.posY = 0
+        self.posX = 0 
         self.placed = False
-        self.rangeM = w,h = (100,100)
-        self.range = py.Surface(self.rangeM,py.SRCALPHA)
-        self.range_rect = self.range.get_rect()
+        self.range = (0,0)
+    
+    def create_bullet(self,x,y):
+
+        bullet = bullets.basic_bullet(x,y)
+
+        return bullet
+
+    def detect(self,enemies_group,bullet_group):
+        
+        coll = py.sprite.groupcollide(enemies_group, bullet_group, True, True)
+
+        # for enemy,bullet_group in coll.items():
+
+        #     enemy.hp -= sum(bullet.damage for bullet in bullet_group)
+
 
 class toxic_tower(py.sprite.Sprite):
 
@@ -23,9 +37,7 @@ class toxic_tower(py.sprite.Sprite):
         self.rect = self.sprite.get_rect()
         self.posY,self.posX = py.mouse.get_pos() 
         self.placed = False
-        self.rangeM = w,h = (100,100)
-        self.range = py.Surface(self.rangeM,py.SRCALPHA)
-        self.range_rect = self.range.get_rect()
+        
    
 class ice_tower(py.sprite.Sprite):
 
@@ -35,9 +47,8 @@ class ice_tower(py.sprite.Sprite):
         self.rect = self.sprite.get_rect()
         self.posY,self.posX = py.mouse.get_pos() 
         self.placed = False
-        self.rangeM = w,h = (50,50)
-        self.range = py.Surface(self.rangeM,py.SRCALPHA)
-        self.range_rect = self.range.get_rect()
+       
+      
 
 class water_tower(py.sprite.Sprite):
 
@@ -47,9 +58,8 @@ class water_tower(py.sprite.Sprite):
         self.rect = self.sprite.get_rect()
         self.posY,self.posX = py.mouse.get_pos() 
         self.placed = False
-        self.rangeM = w,h = (100,100)
-        self.range = py.Surface(self.rangeM,py.SRCALPHA)
-        self.range_rect = self.range.get_rect()
+       
+       
 
 class fire_tower(py.sprite.Sprite):
     
@@ -59,9 +69,8 @@ class fire_tower(py.sprite.Sprite):
         self.rect = self.sprite.get_rect()
         self.posY,self.posX = py.mouse.get_pos() 
         self.placed = False
-        self.rangeM = w,h = (100,100)
-        self.range = py.Surface(self.rangeM,py.SRCALPHA)
-        self.range_rect = self.range.get_rect()
+       
+       
 
 class poison_tower(py.sprite.Sprite):
 
@@ -71,10 +80,8 @@ class poison_tower(py.sprite.Sprite):
         self.rect = self.sprite.get_rect()
         self.posY,self.posX = py.mouse.get_pos() 
         self.placed = False
-        self.rangeM = w,h = (100,100)
-        self.range = py.Surface(self.rangeM,py.SRCALPHA)
-        self.range_rect = self.range.get_rect()
-
+        
+       
 class rock_tower(py.sprite.Sprite):
 
     def __init__(self):
@@ -83,9 +90,8 @@ class rock_tower(py.sprite.Sprite):
         self.rect = self.sprite.get_rect()
         self.posY,self.posX = py.mouse.get_pos() 
         self.placed = False
-        self.rangeM = w,h = (100,100)
-        self.range = py.Surface(self.rangeM,py.SRCALPHA)
-        self.range_rect = self.range.get_rect()
+       
+        
 
 class mud_tower(py.sprite.Sprite):
 
@@ -95,9 +101,8 @@ class mud_tower(py.sprite.Sprite):
         self.rect = self.sprite.get_rect()
         self.posY,self.posX = py.mouse.get_pos() 
         self.placed = False
-        self.rangeM = w,h = (100,100)
-        self.range = py.Surface(self.rangeM,py.SRCALPHA)
-        self.range_rect = self.range.get_rect()
+        
+        
 
 class laser_tower(py.sprite.Sprite):
 
@@ -107,9 +112,8 @@ class laser_tower(py.sprite.Sprite):
         self.rect = self.sprite.get_rect()
         self.posY,self.posX = py.mouse.get_pos() 
         self.placed = False
-        self.rangeM = w,h = (100,100)
-        self.range = py.Surface(self.rangeM,py.SRCALPHA)
-        self.range_rect = self.range.get_rect()
+       
+        
 
 class bomb_tower(py.sprite.Sprite):
 
@@ -119,9 +123,8 @@ class bomb_tower(py.sprite.Sprite):
         self.rect = self.sprite.get_rect()
         self.posY,self.posX = py.mouse.get_pos() 
         self.placed = False
-        self.rangeM = w,h = (100,100)
-        self.range = py.Surface(self.rangeM,py.SRCALPHA)
-        self.range_rect = self.range.get_rect()
+        
+        
 
 
 #Funcion para crear los objetos de las torres.

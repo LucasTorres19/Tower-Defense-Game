@@ -5,6 +5,7 @@ import sys
 import menu_tower as mt
 import camp as m
 import towers as t
+import enemies as en
 
 py.init()
 
@@ -29,8 +30,11 @@ icon_largo = 36
 icon_alto = 37
 icon_margin = 11
 
-#towers
+#sprites Groups
+bullets = py.sprite.Group()
+enemies = py.sprite.Group()
 
+#towers
 current_tower = 0
 tower_array = []
 have_tower = False
@@ -90,18 +94,26 @@ def Dibujar_grid():
 def main():
     
     #globales
+
     global grid
     global current_tower
     global towers_colors
     global tower_array
     global have_tower
+    global enemies
+    global bullets
 
     Crear_grid()
+
+   
+    
 
     running = True
     while running:
 
-        SCREEN.fill(WHITE)
+        enemy = en.create_enemies(py.mouse.get_pos()[0],py.mouse.get_pos()[1])
+        enemies.add(enemy)
+        SCREEN.fill(BLACK)
 
         #verificador de eventos.
         for event in py.event.get():
@@ -140,12 +152,28 @@ def main():
                     if tower_array[len(tower_array)-1].placed == False:
                         if mouse_pos[0] in range(173,756):
                             tower_array[i].posX,tower_array[i].posY = py.mouse.get_pos()
+                            tower_array[i].range = (tower_array[i].posX + 120,tower_array[i].posY + 120)
                             tower_array[i].placed = True
                             have_tower = False
-
+                
         m.draw_map(SCREEN)
         Dibujar_grid()
         
+        
+        for h in range(len(tower_array)):
+
+            if enemy.posX in range(tower_array[h].range[0]-240,tower_array[h].range[0]) and enemy.posY in range(tower_array[h].range[1]-240,tower_array[h].range[1]):
+                
+                bullet = tower_array[h].create_bullet(tower_array[h].posX+50,tower_array[h].posY)
+                bullets.add(bullet)
+                #bullet.update()
+                SCREEN.blit(bullet.sprite,(bullet.posX,bullet.posY))
+                tower_array[h].detect(enemies,bullets)
+
+
+        
+        SCREEN.blit(enemy.sprite,(enemy.posX,enemy.posY))
+    
         #Dibujando las torres.
         for i in range(len(tower_array)):
             if tower_array[i].placed == False:                
@@ -154,8 +182,6 @@ def main():
             else:
                 #Torre
                 SCREEN.blit(tower_array[i].sprite,m.place_tower(tower_array[i].posX,tower_array[i].posY))
-                #Rango
-                SCREEN.blit(tower_array[i].range,m.place_tower(tower_array[i].posX,tower_array[i].posY))
                 tower_array[i].placed == True
 
         CLOCK.tick(60)
