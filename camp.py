@@ -12,14 +12,26 @@ def draw_map(SCREEN):
     global height 
     global margin 
     
-    color = (250, 167, 72)
+    color1= (250, 167, 72)
+    color2= (250, 215, 175)
 
     for fila in range(15):
         for columnas in range(15):
-            py.draw.rect(SCREEN,color,[((margin+width) * columnas + margin )+ 170,
-                              (margin+height) * fila + margin,
-                              width,
-                              height])
+            if columnas % 2 == 0:
+                py.draw.rect(SCREEN,color1,[((margin+width) * columnas + margin )+ 170,
+                                (margin+height) * fila + margin,
+                                width,
+                                height])
+            elif fila % 2 == 0:
+                py.draw.rect(SCREEN,color1,[((margin+width) * columnas + margin )+ 170,
+                                (margin+height) * fila + margin,
+                                width,
+                                height])
+            else:
+                 py.draw.rect(SCREEN,color2,[((margin+width) * columnas + margin )+ 170,
+                                (margin+height) * fila + margin,
+                                width,
+                                height])
 
 def place_tower(x,y):
     

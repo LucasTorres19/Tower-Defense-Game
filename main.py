@@ -108,12 +108,13 @@ def main():
     #grid de torres.
     Crear_grid()
 
-
+    enemy = en.create_enemies(py.mouse.get_pos()[0],py.mouse.get_pos()[1])
+    
+        
     running = True
     while running:
 
-        enemy = en.create_enemies(py.mouse.get_pos()[0],py.mouse.get_pos()[1])
-        enemies.add(enemy)
+      
         SCREEN.fill(BLACK)
 
         #verificador de eventos.
@@ -160,22 +161,28 @@ def main():
         m.draw_map(SCREEN)
         Dibujar_grid()
         
-        #for para revisar si dentro del rango de la torre hay un enemigo y disparle .(tan bugeadas las colisiones con las balas pero detecta al enemigo en el rango.)
+        #ya se elimian los srpites ,pero de la pantalla del array no
 
         for h in range(len(tower_array)):
 
             if enemy.posX in range(tower_array[h].range[0]-240,tower_array[h].range[0]) and enemy.posY in range(tower_array[h].range[1]-240,tower_array[h].range[1]):
                 
-                bullet = tower_array[h].create_bullet(tower_array[h].posX+50,tower_array[h].posY)
-                bullets.add(bullet)
-                #bullet.update()
+                bullet = tower_array[h].create_bullet(tower_array[h].posX,tower_array[h].posY)
+                
+                bullet.update(enemy.posX,enemy.posY)
+                
+                if py.sprite.collide_rect(bullet, enemy):
+                    enemy.kill()
+                    enemy.live = False
+                
                 SCREEN.blit(bullet.sprite,(bullet.posX,bullet.posY))
-                tower_array[h].detect(enemies,bullets)
 
 
+        if enemy.live == True:
+            SCREEN.blit(enemy.sprite,(enemy.posX,enemy.posY))
         
-        SCREEN.blit(enemy.sprite,(enemy.posX,enemy.posY))
-    
+        print(enemy)
+
         #Dibujando las torres.
         for i in range(len(tower_array)):
             if tower_array[i].placed == False:                

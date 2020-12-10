@@ -11,8 +11,9 @@ class basic_bullet(py.sprite.Sprite):
         self.vel = 3
         self.damage = 10
 
-    def update(self):
+    def update(self,x,y):
 
-        self.rect.right += self.vel
+        self.posX = x
+        self.posY = y
         
         

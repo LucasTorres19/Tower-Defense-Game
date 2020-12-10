@@ -20,15 +20,6 @@ class basic_tower(py.sprite.Sprite):
 
         return bullet
 
-    def detect(self,enemies_group,bullet_group):
-        
-        coll = py.sprite.groupcollide(enemies_group, bullet_group, True, True)
-
-        # for enemy,bullet_group in coll.items():
-
-        #     enemy.hp -= sum(bullet.damage for bullet in bullet_group)
-
-
 class toxic_tower(py.sprite.Sprite):
 
     def __init__(self):

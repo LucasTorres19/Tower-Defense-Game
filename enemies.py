@@ -13,7 +13,7 @@ class Cyclops(py.sprite.Sprite):
         self.posY = y
         self.hp = 20
         self.damage = 20
-
+        self.live = True
 
 def create_enemies(x,y):
 
