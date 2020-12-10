@@ -15,5 +15,4 @@ class basic_bullet(py.sprite.Sprite):
 
         self.posX = x
         self.posY = y
-        
-        
+       
