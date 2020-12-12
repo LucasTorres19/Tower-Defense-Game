@@ -6,6 +6,7 @@ import menu_tower as mt
 import camp as m
 import towers as t
 import enemies as en
+import random
 
 py.init()
 
@@ -107,6 +108,7 @@ def main():
     global have_tower
     global enemies
     global bullets
+    global nro_enemies
 
     #grid de torres.
     Crear_grid()
@@ -164,14 +166,17 @@ def main():
         m.draw_map(SCREEN)
         Dibujar_grid()
         
-
-        #hay que empezar a parametrizar las balas ,enemigos y rango de las torres.
-
         #creacion de enemigos.
 
         if nro_enemies == 0:
             nro_enemies = en.nro_enemies()
 
+        if nro_enemies != 0:
+            for o in range(0,nro_enemies):
+                if o == len(enemies):
+                    enemies.append(en.create_enemies(random.randint(200,500),200)) 
+
+            
         #verficacion de colisiones y calculos de daño.
 
         for h in range(len(tower_array)):
@@ -192,16 +197,23 @@ def main():
                     if enemy.hp <= 0:  
                         enemy.kill()
                         enemy.live = False
+        
+        #movimiento de los enemigos y dibujo
 
-        #Verificando que el enemigo sigue vivo para dibujarlo.          
-        if enemy.live == True:
-            SCREEN.blit(enemy.sprite,(enemy.posX,enemy.posY))
-            
-            #verificar si existe alguna bala.
-            try:
-                SCREEN.blit(bullet.sprite,(bullet.posX,bullet.posY))
-            except:
-                print("no existen balas.")
+        for p in range(nro_enemies):
+            if enemies[p].live == True:
+               enemies[p].posY += 0.5
+
+        #Verificando que el enemigo sigue vivo para dibujarlo. 
+        for y in range(nro_enemies):
+            if enemies[y].live == True:
+                SCREEN.blit(enemies[y].sprite,(enemies[y].posX,enemies[y].posY))
+                
+                #verificar si existe alguna bala.
+                try:
+                    SCREEN.blit(bullet.sprite,(bullet.posX,bullet.posY))
+                except:
+                    print("no existen balas.")
 
         #Dibujando las torres.
         for i in range(len(tower_array)):
@@ -212,9 +224,6 @@ def main():
                 SCREEN.blit(tower_array[i].sprite,m.place_tower(tower_array[i].posX,tower_array[i].posY))
                 tower_array[i].placed == True
         
-        #movimiento de los enemigos
-
-        enemy.posY += 0.5
         CLOCK.tick(30)
         py.display.flip()
 
