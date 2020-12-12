@@ -13,6 +13,8 @@ class basic_tower(py.sprite.Sprite):
         self.posX = 0 
         self.placed = False
         self.range = (0,0)
+        self.shooting = False
+        self.enemy_shooting = 0
     
     def create_bullet(self,x,y):
 

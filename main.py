@@ -112,10 +112,7 @@ def main():
 
     #grid de torres.
     Crear_grid()
-
-    enemy = en.create_enemies(500,200)
-    
-        
+         
     running = True
     while running:
 
@@ -179,25 +176,42 @@ def main():
             
         #verficacion de colisiones y calculos de daño.
 
-        for h in range(len(tower_array)):
-
-            if enemy.posX in range(tower_array[h].range[0]-240,tower_array[h].range[0]) and enemy.posY in range(tower_array[h].range[1]-240,tower_array[h].range[1]):
-                
-                #creando la bala
-                bullet = tower_array[h].create_bullet(tower_array[h].posX,tower_array[h].posY)
-                
-                bullet.update(enemy.posX,enemy.posY)
-                
-                #verificando colision.
-                if py.sprite.collide_rect(bullet, enemy) and enemy.live == True:
-
-                    #calculando daño.
-                    enemy.hp -= bullet.damage
-
-                    if enemy.hp <= 0:  
-                        enemy.kill()
-                        enemy.live = False
+        #arreglar que las torres solo disparen a un objetivo.
         
+        for h in range(len(tower_array)):
+            
+            for g in range(len(enemies)):
+                #Verificar si la torres ya le esta disparando a un enemigo.
+                if tower_array[h].shooting == True:
+
+                     enemies[tower_array[h].enemy_shooting].hp -= bullet.damage
+                     tower_array[h].shooting = True
+
+                     if enemies[tower_array[h].enemy_shooting].hp <= 0:  
+                            enemies[tower_array[h].enemy_shooting].kill()
+                            enemies[tower_array[h].enemy_shooting].live = False
+                            tower_array[h].shooting = False
+                
+                #Verificar si un enemigo esta dentro del rango de la torre.
+                elif enemies[g].posX in range(tower_array[h].range[0]-240,tower_array[h].range[0]) and enemies[g].posY in range(tower_array[h].range[1]-240,tower_array[h].range[1]):
+                    
+                    #creando la bala
+                    bullet = tower_array[h].create_bullet(tower_array[h].posX,tower_array[h].posY)
+                    
+                    bullet.update(enemies[g].posX,enemies[g].posY)
+                    
+                    #verificando colision.
+                    if py.sprite.collide_rect(bullet, enemies[g]) and enemies[g].live == True:
+
+                        #calculando daño.
+                        enemies[g].hp -= bullet.damage
+                        tower_array[h].shooting = True
+                        tower_array[h].enemy_shooting = g
+                        if enemies[g].hp <= 0:  
+                            enemies[g].kill()
+                            enemies[g].live = False
+                            tower_array[h].shooting = False
+            
         #movimiento de los enemigos y dibujo
 
         for p in range(nro_enemies):
