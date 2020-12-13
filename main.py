@@ -34,7 +34,8 @@ icon_margin = 11
 #enemigos
 enemies = []
 nro_enemies = 0
-
+create_enemies = False
+enemies_dead = 0
 bullets = []
 
 
@@ -109,6 +110,8 @@ def main():
     global enemies
     global bullets
     global nro_enemies
+    global create_enemies
+    global enemies_dead
 
     #grid de torres.
     Crear_grid()
@@ -163,16 +166,23 @@ def main():
         m.draw_map(SCREEN)
         Dibujar_grid()
         
+        #-------------------------------------------------------------
+        #Hay que arreglar la generacion automatica de enemigos.
+        #-------------------------------------------------------------
+        
+        print(len(enemies))
         #creacion de enemigos.
-
-        if nro_enemies == 0:
+        if  nro_enemies == enemies_dead:
             nro_enemies = en.nro_enemies()
+            enemies_dead = 0
+            
+            while enemies != []:
+                enemies.clear()
 
-        if nro_enemies != 0:
             for o in range(0,nro_enemies):
                 if o == len(enemies):
                     enemies.append(en.create_enemies(random.randint(200,500),200)) 
-
+        
             
         #verficacion de colisiones y calculos de daño.
 
@@ -191,6 +201,9 @@ def main():
                             enemies[tower_array[h].enemy_shooting].kill()
                             enemies[tower_array[h].enemy_shooting].live = False
                             tower_array[h].shooting = False
+                            enemies_dead += 1
+            
+                            
                 
                 #Verificar si un enemigo esta dentro del rango de la torre.
                 elif enemies[g].posX in range(t.set_negative_range(tower_array[h].range_nro,tower_array[h].range[0]),tower_array[h].range[0]) and enemies[g].posY in range(t.set_negative_range(tower_array[h].range_nro,tower_array[h].range[1]),tower_array[h].range[1]):
@@ -211,15 +224,17 @@ def main():
                             enemies[g].kill()
                             enemies[g].live = False
                             tower_array[h].shooting = False
+                            enemies_dead += 1
             
         #movimiento de los enemigos y dibujo
 
-        for p in range(nro_enemies):
+        for p in range(len(enemies)):
             if enemies[p].live == True:
                enemies[p].posY += 0.5
+          
 
-        #Verificando que el enemigo sigue vivo para dibujarlo. 
-        for y in range(nro_enemies):
+        #Verificando que los enemigos siguen vivos para dibujarlos. 
+        for y in range(len(enemies)):
             if enemies[y].live == True:
                 SCREEN.blit(enemies[y].sprite,(enemies[y].posX,enemies[y].posY))
                 
@@ -227,7 +242,7 @@ def main():
                 try:
                     SCREEN.blit(bullet.sprite,(bullet.posX,bullet.posY))
                 except:
-                    print("no existen balas.")
+                    error = True
 
         #Dibujando las torres.
         for i in range(len(tower_array)):
