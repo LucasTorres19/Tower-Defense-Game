@@ -156,7 +156,7 @@ def main():
                     if tower_array[len(tower_array)-1].placed == False:
                         if mouse_pos[0] in range(173,756):
                             tower_array[i].posX,tower_array[i].posY = py.mouse.get_pos() 
-                            tower_array[i].range = (tower_array[i].posX + 120,tower_array[i].posY + 120)
+                            tower_array[i].range = (t.set_range(tower_array[i].posX,tower_array[i].posY,current_tower))
                             tower_array[i].placed = True
                             have_tower = False
                 
@@ -193,7 +193,7 @@ def main():
                             tower_array[h].shooting = False
                 
                 #Verificar si un enemigo esta dentro del rango de la torre.
-                elif enemies[g].posX in range(tower_array[h].range[0]-240,tower_array[h].range[0]) and enemies[g].posY in range(tower_array[h].range[1]-240,tower_array[h].range[1]):
+                elif enemies[g].posX in range(t.set_negative_range(tower_array[h].range_nro,tower_array[h].range[0]),tower_array[h].range[0]) and enemies[g].posY in range(t.set_negative_range(tower_array[h].range_nro,tower_array[h].range[1]),tower_array[h].range[1]):
                     
                     #creando la bala
                     bullet = tower_array[h].create_bullet(tower_array[h].posX,tower_array[h].posY)
