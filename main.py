@@ -166,13 +166,22 @@ def main():
         m.draw_map(SCREEN)
         Dibujar_grid()
         
-        #-------------------------------------------------------------
-        #Hay que arreglar la generacion automatica de enemigos.
-        #-------------------------------------------------------------
-        
-        print(len(enemies))
+
         #creacion de enemigos.
         if  nro_enemies == enemies_dead:
+            nro_enemies = en.nro_enemies()
+            enemies_dead = 0
+            
+            #Limpiar el array de enemigos.
+            while enemies != []:
+                enemies.clear()
+
+            for o in range(0,nro_enemies):
+                if o == len(enemies):
+                    enemies.append(en.create_enemies(random.randint(200,500),200)) 
+        #Para arreglar un bug que a veces el numero es mayor.
+        elif enemies_dead > nro_enemies:
+
             nro_enemies = en.nro_enemies()
             enemies_dead = 0
             
@@ -181,8 +190,8 @@ def main():
 
             for o in range(0,nro_enemies):
                 if o == len(enemies):
-                    enemies.append(en.create_enemies(random.randint(200,500),200)) 
-        
+                    enemies.append(en.create_enemies(random.randint(200,500),200))
+
             
         #verficacion de colisiones y calculos de daño.
 
@@ -194,15 +203,18 @@ def main():
                 #Verificar si la torres ya le esta disparando a un enemigo.
                 if tower_array[h].shooting == True:
 
-                     enemies[tower_array[h].enemy_shooting].hp -= bullet.damage
-                     tower_array[h].shooting = True
+                     try:
+                        enemies[tower_array[h].enemy_shooting].hp -= bullet.damage
+                        tower_array[h].shooting = True
 
-                     if enemies[tower_array[h].enemy_shooting].hp <= 0:  
-                            enemies[tower_array[h].enemy_shooting].kill()
-                            enemies[tower_array[h].enemy_shooting].live = False
-                            tower_array[h].shooting = False
-                            enemies_dead += 1
-            
+                        if enemies[tower_array[h].enemy_shooting].hp <= 0:  
+                                enemies[tower_array[h].enemy_shooting].kill()
+                                enemies[tower_array[h].enemy_shooting].live = False
+                                tower_array[h].shooting = False
+                                enemies_dead += 1
+                     except:
+                        error = True
+                        pass
                             
                 
                 #Verificar si un enemigo esta dentro del rango de la torre.
