@@ -53,3 +53,30 @@ def color_icon(fila,columna,array_colors):
         color = array_colors[9]
     
     return color
+
+def precio_tower(fila,columna):
+    
+    if fila == 0 and columna == 0:
+        precio = 200
+    elif fila == 0 and columna == 1:
+        precio = 300
+    elif fila == 1 and columna == 0:
+        precio = 400
+    elif fila == 1 and columna == 1:
+        precio = 500
+    elif fila == 2 and columna == 0:
+        precio = 700
+    elif fila == 2 and columna == 1:
+        precio = 1000
+    elif fila == 3 and columna == 0:
+        precio = 1200
+    elif fila == 3 and columna == 1:
+        precio = 1400
+    elif fila == 4 and columna == 0:
+        precio = 1600
+    elif fila == 4 and columna == 1:
+        precio = 2000
+    else:
+        precio = 0
+
+    return precio

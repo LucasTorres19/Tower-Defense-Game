@@ -60,6 +60,8 @@ towers_colors = [(0,0,0),(0,255,0),(0,255,255),(0,0,255),(255,0,0),(40,25,55),(2
 font = py.font.Font(None, 30)
 live = 100
 live_text = font.render("Vida: " + str(live), 0, (255, 255, 255))
+money = 500
+money_text = font.render("Dinero: " + str(money), 0, (255, 255, 255))
 
 #Config
 
@@ -125,6 +127,8 @@ def main():
     global font
     global live
     global live_text
+    global money
+    global money_text
 
     #grid de torres.
     Crear_grid()
@@ -132,8 +136,9 @@ def main():
     running = True
     while running:
         
-        #Aptualizar la vida.
+        #Aptualizar la vida y el dinero.
         live_text = font.render("Vida: " + str(live), 0, (255, 255, 255))
+        money_text = font.render("Dinero: " + str(money), 0, (255, 255, 255))
 
         SCREEN.fill(BLACK)
 
@@ -154,7 +159,8 @@ def main():
                 if pos_com in range(0,2) and pos_fila in range(0,5) and have_tower == False:
                     grid[pos_fila][pos_com] = 1
                     current_tower = mt.nro_tower(pos_fila,pos_com)
-
+                    precio = mt.precio_tower(pos_fila,pos_com)
+                    
                     #borrar 1 que pueda haber en otro campo.
                     for fila in range(5):
                         for columna in range(2):
@@ -164,11 +170,14 @@ def main():
                                 grid[fila][columna] = 0
 
                     #Agregar la torre al array de torres
-                    for i in range(0,len(tower_array)+1):
-                        if i == len(tower_array):
-                            tower_array.append(t.create_tower(current_tower))                
-                            have_tower = True
-                
+                    
+                    if money >= precio:
+                        for i in range(0,len(tower_array)+1):
+                            if i == len(tower_array):
+                                tower_array.append(t.create_tower(current_tower))                
+                                have_tower = True
+                        money -= precio
+
                 #Si la torre todavia no fue colocada , tomar la posicion del mouse y ponerla.
                 if have_tower == True:
                     if tower_array[len(tower_array)-1].placed == False:
@@ -220,6 +229,7 @@ def main():
                                 tower_array[h].shooting = False
                                 tower_array[h].enemy_shooting = -1
                                 enemies_dead += 1
+                                money += 100
                                              
                      except:
                         bullet = tower_array[h].create_bullet(tower_array[h].posX,tower_array[h].posY)
@@ -241,7 +251,7 @@ def main():
                                 tower_array[h].shooting = False
                                 tower_array[h].enemy_shooting = -1       
                                 enemies_dead += 1
-                                                
+                                money += 100                    
                             
                 
                 #Verificar si un enemigo esta dentro del rango de la torre.
@@ -267,6 +277,7 @@ def main():
                             tower_array[h].shooting = False
                             tower_array[h].enemy_shooting = -1
                             enemies_dead += 1
+                            money += 100
                           
         #movimiento de los enemigos y dibujo
 
@@ -303,7 +314,11 @@ def main():
         #Dibujar texto
 
         SCREEN.blit(live_text,(10,250))
+        SCREEN.blit(money_text,(10,270))
+
+        #fps
         CLOCK.tick(60)
+        #Aptualizar pantalla.
         py.display.flip()
 
 if __name__ == "__main__":
