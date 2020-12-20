@@ -35,6 +35,7 @@ enemies = []
 nro_enemies = 0
 create_enemies = False
 enemies_dead = 0
+aux = 0
 
 #Balas
 bullets = []
@@ -112,6 +113,7 @@ def main():
     global nro_enemies
     global create_enemies
     global enemies_dead
+    global aux
 
     #grid de torres.
     Crear_grid()
@@ -166,6 +168,7 @@ def main():
         Dibujar_grid()
         
         #creacion de enemigos.
+
         if  nro_enemies == enemies_dead:
             nro_enemies = en.nro_enemies()
             enemies_dead = 0
@@ -179,14 +182,12 @@ def main():
                     if o == len(enemies):
                         enemies.append(en.create_enemies(random.randint(173,720),1))
     
-        #para cuando ocurre un bug que el numero de muertos es mayor al numero de enemigos que realmente habia xD.
-        if enemies_dead > nro_enemies:
+        
+
+        if enemies_dead > nro_enemies and aux == nro_enemies:
             enemies_dead = nro_enemies
 
         #verficacion de colisiones y calculos de daño.
-
-        #arreglar que las torres solo disparen a un objetivo.
-        
         for h in range(len(tower_array)):
             
             for g in range(len(enemies)):
@@ -197,11 +198,13 @@ def main():
                         enemies[tower_array[h].enemy_shooting].hp -= bullet.damage
                         tower_array[h].shooting = True
 
-                        if enemies[tower_array[h].enemy_shooting].hp <= 0:  
+                        if enemies[tower_array[h].enemy_shooting].hp <= 0 and enemies[g].live == True:  
                                 enemies[tower_array[h].enemy_shooting].kill()
                                 enemies[tower_array[h].enemy_shooting].live = False
                                 tower_array[h].shooting = False
-                                enemies_dead += 1                   
+                                tower_array[h].enemy_shooting = -1
+                                enemies_dead += 1
+                                             
                             
                      except:
                         bullet = tower_array[h].create_bullet(tower_array[h].posX,tower_array[h].posY)
@@ -215,11 +218,13 @@ def main():
                             tower_array[h].shooting = True
                             tower_array[h].enemy_shooting = g
                             
-                            if enemies[g].hp <= 0:  
+                            if enemies[g].hp <= 0 and enemies[g].live == True:  
                                 enemies[g].kill()
                                 enemies[g].live = False
-                                tower_array[h].shooting = False       
-                                enemies_dead += 1                   
+                                tower_array[h].shooting = False
+                                tower_array[h].enemy_shooting = -1       
+                                enemies_dead += 1
+                                                
                             
                 
                 #Verificar si un enemigo esta dentro del rango de la torre.
@@ -237,12 +242,13 @@ def main():
                         enemies[g].hp -= bullet.damage
                         tower_array[h].shooting = True
                         tower_array[h].enemy_shooting = g
-                        if enemies[g].hp <= 0:  
+                        if enemies[g].hp <= 0 and enemies[g].live == True:  
                             enemies[g].kill()
                             enemies[g].live = False
                             tower_array[h].shooting = False
+                            tower_array[h].enemy_shooting = -1
                             enemies_dead += 1
-                                              
+                          
         #movimiento de los enemigos y dibujo
 
         for p in range(len(enemies)):
