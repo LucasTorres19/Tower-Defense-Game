@@ -54,6 +54,13 @@ GREEN = ( 0, 255, 0)
 RED = (255,0,0)
 GREY = (225, 237, 228)
 towers_colors = [(0,0,0),(0,255,0),(0,255,255),(0,0,255),(255,0,0),(40,25,55),(23,23,10),(100,100,0),(100,21,100),(1,40,2)]
+
+#Menu
+
+font = py.font.Font(None, 30)
+live = 100
+live_text = font.render("Vida: " + str(live), 0, (255, 255, 255))
+
 #Config
 
 py.display.set_caption('Tower Defense Game B)')
@@ -115,12 +122,18 @@ def main():
     global create_enemies
     global enemies_dead
     global aux
+    global font
+    global live
+    global live_text
 
     #grid de torres.
     Crear_grid()
          
     running = True
     while running:
+        
+        #Aptualizar la vida.
+        live_text = font.render("Vida: " + str(live), 0, (255, 255, 255))
 
         SCREEN.fill(BLACK)
 
@@ -170,7 +183,7 @@ def main():
         
         #creacion de enemigos.
 
-        if  nro_enemies == enemies_dead:
+        if  nro_enemies == enemies_dead and live > 0:
             nro_enemies = en.nro_enemies()
             enemies_dead = 0
             
@@ -260,7 +273,12 @@ def main():
         for p in range(len(enemies)):
             if enemies[p].live == True:
                enemies[p].posY += enemies[p].speed
-          
+
+               #Restar vida si el enemigo llega al final del mapa.
+               if enemies[p].posY == HEIGHT:
+                    live -= enemies[p].damage
+                    enemies_dead += 1
+                    enemies[p].live = False
 
         #Verificando que los enemigos siguen vivos para dibujarlos. 
         for y in range(len(enemies)):
@@ -282,6 +300,9 @@ def main():
                 SCREEN.blit(tower_array[i].sprite,m.place_tower(tower_array[i].posX,tower_array[i].posY))
                 tower_array[i].placed == True
         
+        #Dibujar texto
+
+        SCREEN.blit(live_text,(10,250))
         CLOCK.tick(60)
         py.display.flip()
 
