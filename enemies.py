@@ -14,6 +14,7 @@ class Cyclops(py.sprite.Sprite):
         self.hp = 400
         self.damage = 20
         self.live = True
+        self.speed = 0.5
 
 class Dark_enemy(py.sprite.Sprite):
     
@@ -23,9 +24,10 @@ class Dark_enemy(py.sprite.Sprite):
         self.rect = self.sprite.get_rect()
         self.posX = x
         self.posY = y
-        self.hp = 400
+        self.hp = 10000
         self.damage = 20
         self.live = True
+        self.speed = 0.5
 
 class Orc(py.sprite.Sprite):
     
@@ -35,9 +37,10 @@ class Orc(py.sprite.Sprite):
         self.rect = self.sprite.get_rect()
         self.posX = x
         self.posY = y
-        self.hp = 400
+        self.hp = 50000
         self.damage = 20
         self.live = True
+        self.speed = 0.5
 
 
 def create_enemies(x,y):
@@ -59,6 +62,6 @@ def create_enemies(x,y):
 
 def nro_enemies():
 
-    nro_enemies = random.randint(1,10)    
+    nro_enemies = random.randint(20,50)    
     
     return nro_enemies 

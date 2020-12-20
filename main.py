@@ -6,6 +6,7 @@ import menu_tower as mt
 import camp as m
 import towers as t
 import enemies as en
+import bullets as b
 import random
 
 py.init()
@@ -198,6 +199,8 @@ def main():
                         enemies[tower_array[h].enemy_shooting].hp -= bullet.damage
                         tower_array[h].shooting = True
 
+                        b.disadvantage(bullet.type,enemies[tower_array[h].enemy_shooting])
+
                         if enemies[tower_array[h].enemy_shooting].hp <= 0 and enemies[g].live == True:  
                                 enemies[tower_array[h].enemy_shooting].kill()
                                 enemies[tower_array[h].enemy_shooting].live = False
@@ -205,7 +208,6 @@ def main():
                                 tower_array[h].enemy_shooting = -1
                                 enemies_dead += 1
                                              
-                            
                      except:
                         bullet = tower_array[h].create_bullet(tower_array[h].posX,tower_array[h].posY)
                         
@@ -217,6 +219,8 @@ def main():
                             enemies[g].hp -= bullet.damage
                             tower_array[h].shooting = True
                             tower_array[h].enemy_shooting = g
+
+                            b.disadvantage(bullet.type,enemies[g])
                             
                             if enemies[g].hp <= 0 and enemies[g].live == True:  
                                 enemies[g].kill()
@@ -242,6 +246,8 @@ def main():
                         enemies[g].hp -= bullet.damage
                         tower_array[h].shooting = True
                         tower_array[h].enemy_shooting = g
+                        b.disadvantage(bullet.type,enemies[g])
+                        
                         if enemies[g].hp <= 0 and enemies[g].live == True:  
                             enemies[g].kill()
                             enemies[g].live = False
@@ -253,7 +259,7 @@ def main():
 
         for p in range(len(enemies)):
             if enemies[p].live == True:
-               enemies[p].posY += 0.5
+               enemies[p].posY += enemies[p].speed
           
 
         #Verificando que los enemigos siguen vivos para dibujarlos. 

@@ -38,7 +38,7 @@ class toxic_tower(py.sprite.Sprite):
 
     def create_bullet(self,x,y):
 
-        bullet = bullets.basic_bullet(x,y)
+        bullet = bullets.Toxic_bullet(x,y)
 
         return bullet
 
@@ -57,7 +57,7 @@ class ice_tower(py.sprite.Sprite):
 
     def create_bullet(self,x,y):
 
-        bullet = bullets.basic_bullet(x,y)
+        bullet = bullets.Ice_bullet(x,y)
 
         return bullet 
 
@@ -76,7 +76,7 @@ class water_tower(py.sprite.Sprite):
 
     def create_bullet(self,x,y):
 
-        bullet = bullets.basic_bullet(x,y)
+        bullet = bullets.Water_bullet(x,y)
 
         return bullet  
 
@@ -95,7 +95,7 @@ class fire_tower(py.sprite.Sprite):
 
     def create_bullet(self,x,y):
 
-        bullet = bullets.basic_bullet(x,y)
+        bullet = bullets.Fire_bullet(x,y)
 
         return bullet  
        
@@ -115,7 +115,7 @@ class poison_tower(py.sprite.Sprite):
 
     def create_bullet(self,x,y):
 
-        bullet = bullets.basic_bullet(x,y)
+        bullet = bullets.Poison_bullet(x,y)
 
         return bullet    
        
@@ -134,7 +134,7 @@ class rock_tower(py.sprite.Sprite):
 
     def create_bullet(self,x,y):
 
-        bullet = bullets.basic_bullet(x,y)
+        bullet = bullets.Rock_bullet(x,y)
 
         return bullet   
         
@@ -154,7 +154,7 @@ class mud_tower(py.sprite.Sprite):
 
     def create_bullet(self,x,y):
 
-        bullet = bullets.basic_bullet(x,y)
+        bullet = bullets.Mud_bullet(x,y)
 
         return bullet   
         
@@ -168,13 +168,13 @@ class laser_tower(py.sprite.Sprite):
         self.posY,self.posX = py.mouse.get_pos() 
         self.placed = False
         self.range = (0,0)
-        self.range_nro = 500
+        self.range_nro = 200
         self.shooting = False
         self.enemy_shooting = 0
 
     def create_bullet(self,x,y):
 
-        bullet = bullets.basic_bullet(x,y)
+        bullet = bullets.Laser(x,y)
 
         return bullet   
         
@@ -194,7 +194,7 @@ class bomb_tower(py.sprite.Sprite):
 
     def create_bullet(self,x,y):
 
-        bullet = bullets.basic_bullet(x,y)
+        bullet = bullets.Bomb(x,y)
 
         return bullet
 
